@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_product"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/prod_layout_border"
+    tools:context=".ProductActivity">
+
+    <!--todo: fix tab/next positions to go in order. right now, qty is skipped and last in order -->
+
+    <TextView
+        android:id="@+id/tv_label_product_info"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/match_constraint"
+        android:gravity="center"
+        android:padding="@dimen/label_padding"
+        android:text="@string/label_product_info"
+        android:textSize="@dimen/label_text"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/et_product_qty"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_product_name"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/edit_text_margin"
+        android:layout_marginRight="@dimen/edit_text_margin"
+        android:gravity="center"
+        android:hint="@string/edit_hint_product_name"
+        android:inputType="textAutoComplete"
+        android:textSize="@dimen/text_prod_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_label_product_info"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:text="elephant-shaped coffee cup" />
+
+    <EditText
+        android:id="@+id/et_product_price"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/edit_text_margin"
+        android:layout_marginRight="@dimen/edit_text_margin"
+        android:gravity="center"
+        android:hint="@string/edit_hint_product_price"
+        android:inputType="number"
+        android:textSize="@dimen/text_prod_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_label_product_info"
+        app:layout_constraintTop_toBottomOf="@id/et_product_name"
+
+        tools:text="$3200" />
+
+    <!--https://material.io/tools/icons/?search=remove&icon=remove&style=outline
+        ...had to edit and re-save; import was leaving black background.
+        known bug
+    -->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_qty_minus"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:src="@drawable/sub48"
+        app:layout_constraintStart_toEndOf="@id/tv_label_product_info"
+        app:layout_constraintTop_toBottomOf="@id/et_product_price"
+
+        />
+
+    <EditText
+        android:id="@+id/et_product_qty"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:gravity="center"
+        android:hint="@string/edit_hint_quantity"
+        android:inputType="number"
+        android:textSize="@dimen/text_prod_input"
+        app:layout_constraintEnd_toStartOf="@id/fab_qty_plus"
+        app:layout_constraintStart_toEndOf="@id/fab_qty_minus"
+        app:layout_constraintTop_toBottomOf="@id/et_product_price"
+
+        tools:text="35" />
+
+    <!--https://material.io/tools/icons/?icon=add&style=outline
+        ...had to edit and re-save; import was leaving black background.
+        known bug
+    -->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_qty_plus"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:src="@drawable/add48"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_product_price"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_label_supplier_info"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/match_constraint"
+        android:gravity="center"
+        android:padding="@dimen/label_padding"
+        android:text="@string/label_supplier_info"
+        android:textSize="@dimen/label_text"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/et_supplier_phone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_label_product_info" />
+
+    <EditText
+        android:id="@+id/et_supplier_name"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/edit_text_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/edit_text_margin"
+        android:gravity="center"
+        android:hint="@string/edit_hint_supplier_name"
+        android:inputType="textAutoComplete"
+        android:textSize="@dimen/text_prod_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_label_supplier_info"
+        app:layout_constraintTop_toTopOf="@id/tv_label_supplier_info"
+
+        tools:text="super cups 'r' us" />
+
+    <EditText
+        android:id="@+id/et_supplier_phone"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/edit_text_margin"
+        android:layout_marginRight="@dimen/edit_text_margin"
+        android:gravity="center"
+        android:hint="@string/edit_hint_supplier_phone"
+        android:inputType="phone"
+        android:textSize="@dimen/text_prod_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_label_supplier_info"
+        app:layout_constraintTop_toBottomOf="@id/et_supplier_name"
+
+        tools:text="123.456.7890" />
+
+    <!--https://material.io/tools/icons/?search=phone&icon=local_phone&style=outline-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_phone_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/outline_local_phone_white_48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        />
+
+</android.support.constraint.ConstraintLayout>

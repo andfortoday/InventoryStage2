@@ -1,0 +1,50 @@
+<resources>
+
+    <string name="app_name">"Inventory, Stage 2"</string>
+
+    <string name="empty_list_text">"this list is empty"</string>
+
+    <string name="btn_list_sale">"sale"</string>
+
+    <string name="menu_delete_title">"delete"</string>
+    <string name="menu_edit_title">"edit"</string>
+    <string name="menu_accept_title">"accept"</string>
+    <string name="menu_cancel_title">"cancel"</string>
+
+    <string name="label_product_info">"product\ninformation"</string>
+    <string name="label_supplier_info">"supplier\ninformation"</string>
+
+    <string name="edit_hint_product_name">"product name"</string>
+    <string name="edit_hint_product_price">"price"</string>
+    <string name="edit_hint_quantity">"quantity"</string>
+    <string name="edit_hint_supplier_name">"supplier name"</string>
+    <string name="edit_hint_supplier_phone">"supplier phone number"</string>
+
+    <string name="product_title_add_new">"add new product"</string>
+    <string name="product_title_edit_current">"edit product"</string>
+    <string name="product_title_view_current">"view product"</string>
+    <string name="product_item_deleted">"product deleted from inventory"</string>
+    <string name="product_save_insert_success">"new product saved successfully"</string>
+    <string name="product_save_update_success">"product updated successfully"</string>
+
+    <string name="err_intended_menu_state">"something's wrong with the intended state of the menu"</string>
+    <string name="err_provider_query_unknown_uri">"cannot query unknown URI"</string>
+    <string name="err_provider_mime_unknown_uri">"unknown URI"</string>
+    <string name="err_provider_mime_match">"with match id"</string>
+    <string name="err_provider_insert_not_suppt">"insertion is not supported for"</string>
+    <string name="err_provider_insert_fail">"failed to insert for"</string>
+    <string name="err_provider_update_not_suppt">"updating is not supported for"</string>
+    <string name="err_provider_delete_not_suppt">"deleting is not supported for"</string>
+    <string name="err_product_deleting">"error deleting inventory row"</string>
+    <string name="err_product_save_empty_fields">"you have to fill out each field on this screen"</string>
+    <string name="err_product_save_error_saving">"there was an error saving this product"</string>
+    <string name="err_product_save_updating">"there was an error updating this product"</string>
+
+    <string name="dialog_unsaved_changes_q">"discard your changes and quit editing?"</string>
+    <string name="dialog_unsaved_discard">"discard"</string>
+    <string name="dialog_unsaved_keep_editing">"keep editing"</string>
+    <string name="dialog_delete_row_q">"delete this product?"</string>
+    <string name="dialog_delete_del">"delete"</string>
+    <string name="dialog_delete_cancel">"cancel"</string>
+
+</resources>

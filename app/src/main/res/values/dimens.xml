@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="match_constraint">0dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="list_text_border">8dp</dimen>
+
+    <dimen name="text_product_name">16sp</dimen>
+    <dimen name="text_product_price">14sp</dimen>
+    <dimen name="text_product_qty">14sp</dimen>
+    <dimen name="btn_text_sale">16sp</dimen>
+
+    <dimen name="prod_layout_border">8dp</dimen>
+    <dimen name="label_padding">16dp</dimen>
+    <dimen name="label_text">16sp</dimen>
+    <dimen name="text_prod_input">14sp</dimen>
+    <dimen name="edit_text_margin">16dp</dimen>
+
+</resources>

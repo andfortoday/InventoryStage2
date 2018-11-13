@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="@dimen/list_text_border">
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_product_name"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="cereal bowl" />
+
+    <TextView
+        android:id="@+id/tv_product_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_product_price"
+        android:textStyle="italic"
+        app:layout_constraintTop_toBottomOf="@id/tv_product_name"
+        tools:text="$25.00"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_product_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_product_qty"
+        app:layout_constraintTop_toBottomOf="@id/tv_product_price"
+        tools:text="327" />
+
+
+    <!-- focusable is set to false to allow listview onitemclicklistener to work -->
+    <Button
+        android:id="@+id/btn_product_sale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:background="#5888A0"
+        android:focusable="false"
+        android:padding="0dp"
+        android:text="@string/btn_list_sale"
+        android:textAllCaps="false"
+        android:textSize="@dimen/btn_text_sale"
+        app:layout_constraintBottom_toBottomOf="@id/tv_product_quantity"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

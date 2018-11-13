@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!--todo: implement menu in new activity's java-->
+
+<!--todo: thinking ahead: have to change screen title;
+    todo: - also have to change edit menu item to "check" v/ or something like that when clicked.
+    todoD:  just checked: add here and set visibility.
+    -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.fipplippippity.kevin.inventorystage2.ProductActivity"
+    >
+
+    <!--https://material.io/tools/icons/?search=delete&icon=delete_outline&style=outline-->
+    <item
+        android:id="@+id/menu_product_delete"
+        android:icon="@drawable/outline_delete_outline_white_48dp"
+        android:title="@string/menu_delete_title"
+        app:showAsAction="always" />
+
+    <!--https://material.io/tools/icons/?search=edit&icon=edit&style=outline-->
+    <item
+        android:id="@+id/menu_product_edit"
+        android:icon="@drawable/outline_edit_white_48dp"
+        android:title="@string/menu_edit_title"
+        app:showAsAction="always" />
+
+    <!--https://material.io/tools/icons/?icon=clear&style=outline-->
+    <item
+        android:id="@+id/menu_product_cancel"
+        android:icon="@drawable/outline_clear_white_48dp"
+        android:title="@string/menu_cancel_title"
+        app:showAsAction="always" />
+
+    <!--https://material.io/tools/icons/?search=check&icon=check&style=outline-->
+    <item
+        android:id="@+id/menu_product_accept"
+        android:icon="@drawable/outline_check_white_48dp"
+        android:title="@string/menu_accept_title"
+        app:showAsAction="always" />
+</menu>
