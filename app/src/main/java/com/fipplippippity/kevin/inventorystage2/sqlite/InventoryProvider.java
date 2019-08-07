@@ -42,8 +42,7 @@ public class InventoryProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        /* final..?*/
-        int matchReturn = uriMatcher.match(uri);
+        final int matchReturn = uriMatcher.match(uri);
         switch (matchReturn) {
             case INVENTORY_BASE_RETURN_CODE:
                 return InventoryEntry.CONTENT_LIST_MIME_TYPE;
@@ -119,8 +118,7 @@ public class InventoryProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
 
-        /*final...?*/
-        int matchReturn = uriMatcher.match(uri);
+        final int matchReturn = uriMatcher.match(uri);
         switch (matchReturn) {
 
             case INVENTORY_BASE_RETURN_CODE:
@@ -158,8 +156,7 @@ public class InventoryProvider extends ContentProvider {
         SQLiteDatabase sqlDB = inventoryDBHelper.getWritableDatabase();
         int rowsDeleted;
 
-        /*final..?*/
-        int matchReturn = uriMatcher.match(uri);
+        final int matchReturn = uriMatcher.match(uri);
         switch (matchReturn) {
             case INVENTORY_BASE_RETURN_CODE:
 //              delete all rows that match the selection and selection args

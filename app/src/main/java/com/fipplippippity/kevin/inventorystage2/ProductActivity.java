@@ -5,6 +5,7 @@ import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -38,8 +39,10 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
     };
     private static int currentState;
     private final int MAX_QTY = 300000;
+    private final int MAX_PRICE = 10000000;
     private final int SAVE_RETURN_SUCCESS = 1;
     private final int SAVE_RETURN_FAIL = 2;
+    boolean priceOK, qtyOK = false;
     ContentValues saveInventoryRowValues;
     private MenuItem menuDelete,
             menuEdit,
@@ -60,6 +63,41 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
             currentETSupplierName,
             currentETSupplierPhone;
     private boolean dialogClicked = false;
+
+    public static void setProductState(int fromTo) {
+
+        currentState = fromTo;
+
+        switch (fromTo) {
+            case MAIN_TO_ADD_VIEW:
+                productState[MAIN_TO_ADD_VIEW] = true;
+                productState[LIST_TO_PROD_VIEW] = false;
+                productState[PROD_VIEW_TO_PROD_EDIT] = false;
+                productState[PROD_EDIT_TO_PROD_VIEW] = false;
+                break;
+
+            case LIST_TO_PROD_VIEW:
+                productState[MAIN_TO_ADD_VIEW] = false;
+                productState[LIST_TO_PROD_VIEW] = true;
+                productState[PROD_VIEW_TO_PROD_EDIT] = false;
+                productState[PROD_EDIT_TO_PROD_VIEW] = false;
+                break;
+
+            case PROD_VIEW_TO_PROD_EDIT:
+                productState[MAIN_TO_ADD_VIEW] = false;
+                productState[LIST_TO_PROD_VIEW] = false;
+                productState[PROD_VIEW_TO_PROD_EDIT] = true;
+                productState[PROD_EDIT_TO_PROD_VIEW] = false;
+                break;
+
+            case PROD_EDIT_TO_PROD_VIEW:
+                productState[MAIN_TO_ADD_VIEW] = false;
+                productState[LIST_TO_PROD_VIEW] = false;
+                productState[PROD_VIEW_TO_PROD_EDIT] = false;
+                productState[PROD_EDIT_TO_PROD_VIEW] = true;
+                break;
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,6 +121,11 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
                     currentETProductQty = "0";
                 }
                 int txtQty = Integer.valueOf(currentETProductQty);
+                if (txtQty > MAX_QTY) {
+                    currentETProductQty = String.valueOf(MAX_QTY);
+                    etQty.setText(currentETProductQty);
+                    return;
+                }
                 if (txtQty >= 1) {
                     txtQty--;
                 }
@@ -99,11 +142,30 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
                     currentETProductQty = "0";
                 }
                 int txtQty = Integer.valueOf(currentETProductQty);
+                if (txtQty >= MAX_QTY) {
+                    currentETProductQty = String.valueOf(MAX_QTY);
+                    etQty.setText(currentETProductQty);
+                    return;
+                }
                 if (txtQty < MAX_QTY) {
                     txtQty++;
                 }
                 currentETProductQty = String.valueOf(txtQty);
                 etQty.setText(currentETProductQty);
+            }
+        });
+
+        fabPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//              phone number text box doesn't allow characters other than phone-related (ie #'s, -, +, ., etc.)
+//              also: box cannot be empty; that is checked and prevented on input.
+                Uri phoneNum = Uri.parse(etSupplierPhone.getText().toString());
+                Intent intentPhone = new Intent(Intent.ACTION_DIAL, phoneNum);
+                intentPhone.setData(Uri.parse("tel:" + phoneNum));
+                if (intentPhone.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intentPhone);
+                }
             }
         });
 
@@ -122,15 +184,6 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
                 lockEditables(true);
                 getLoaderManager().initLoader(MainActivity.INVENTORY_LOADER, null, this);
                 break;
-//
-////          todo: these two are *not* called when this change is made. need to update accordingly.
-//            case PROD_VIEW_TO_PROD_EDIT:
-//                setTitle(getString(R.string.product_title_edit_current));
-//                break;
-//
-//            case PROD_EDIT_TO_PROD_VIEW:
-//                setTitle(getString(R.string.product_title_view_current));
-//                break;
         }
     }
 
@@ -155,7 +208,6 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
             menuCancel = menu.findItem(R.id.menu_product_cancel);
             menuAccept = menu.findItem(R.id.menu_product_accept);
         }
-//        moving from main (fa button) to add
         setupMenus(currentState);
         return true;
     }
@@ -166,13 +218,25 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
         switch (item.getItemId()) {
 
             case R.id.menu_product_accept:
+
 //              ie if you clicked the fa button on mainactivity to get here to add a new product
 //              now you are clicking to accept changes/addition
                 if (currentState == MAIN_TO_ADD_VIEW) {
-//                    todo: save to db, etc.
                     getCurrentTextFields();
                     if (allFieldsEmpty() || anyFieldEmpty()) {
                         Toast.makeText(this, getString(R.string.err_product_save_empty_fields), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
+                    if (Integer.valueOf(currentETProductQty) > MAX_QTY) {
+                        etQty.setText(String.valueOf(MAX_QTY));
+                        Toast.makeText(this, getString(R.string.err_max_qty_exceeded), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
+                    if (Integer.valueOf(currentETProductPrice) > MAX_PRICE) {
+                        etPrice.setText(String.valueOf(MAX_PRICE));
+                        Toast.makeText(this, getString(R.string.err_max_price_exceeded), Toast.LENGTH_SHORT).show();
                         break;
                     }
 
@@ -191,16 +255,28 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
                         Toast.makeText(this, getString(R.string.err_product_save_empty_fields), Toast.LENGTH_SHORT).show();
                         break;
                     } else if (!changesMade()) {
-//                        todo: hardcoding
                         setProductState(PROD_EDIT_TO_PROD_VIEW);
                         resetTextFieldsAfterEditCancel();
                         setupMenus(PROD_EDIT_TO_PROD_VIEW);
                         lockEditables(true);
                         fabPhone.show();
                         setTitle(getString(R.string.product_title_view_current));
-                        Toast.makeText(this, "no changes were made", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.info_no_changes_made), Toast.LENGTH_SHORT).show();
                         return true;
                     }
+
+                    if (Integer.valueOf(currentETProductQty) > MAX_QTY) {
+                        etQty.setText(String.valueOf(MAX_QTY));
+                        Toast.makeText(this, getString(R.string.err_max_qty_exceeded), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
+                    if (Integer.valueOf(currentETProductPrice) > MAX_PRICE) {
+                        etPrice.setText(String.valueOf(MAX_PRICE));
+                        Toast.makeText(this, getString(R.string.err_max_price_exceeded), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
                     int returnSaveInventory = saveInventory();
                     if (returnSaveInventory == SAVE_RETURN_FAIL) {
                         break;
@@ -253,7 +329,6 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        // User clicked "Discard" button, navigate to parent activity.
                                         setProductState(PROD_EDIT_TO_PROD_VIEW);
                                         resetTextFieldsAfterEditCancel();
                                         lockEditables(true);
@@ -262,23 +337,18 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
                                         fabPhone.show();
                                     }
                                 };
-                        // Show a dialog that notifies the user they have unsaved changes
                         dialogUnsavedChanges(discardButtonClickListener);
                         return true;
                     }
                 }
                 return true;
 
-
             case R.id.menu_product_delete:
-                deleteInventoryRow();
-                resetProductState();
-                lockEditables(true);
-                NavUtils.navigateUpFromSameTask(ProductActivity.this);
+                dialogDeleteRow();
                 return true;
 
             case R.id.menu_product_edit:
-//                translation: if you were already in edit view, changed the state as if you just
+//                translation: if you were already in edit view, change the state as if you just
 //                entered there by clicking a list item (ie go back to read-only mode of the product)
                 if (currentState == LIST_TO_PROD_VIEW || currentState == PROD_EDIT_TO_PROD_VIEW) {
                     setupMenus(PROD_VIEW_TO_PROD_EDIT);
@@ -300,11 +370,9 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        // User clicked "Discard" button, navigate to parent activity.
                                         navHomeOrBack(false);
                                     }
                                 };
-                        // Show a dialog that notifies the user they have unsaved changes
                         dialogUnsavedChanges(discardButtonClickListener);
                         return true;
                     }
@@ -317,13 +385,11 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        // User clicked "Discard" button, navigate to parent activity.
                                         resetTextFieldsAfterEditCancel();
                                         dialogClicked = true;
                                         navHomeOrBack(false);
                                     }
                                 };
-                        // Show a dialog that notifies the user they have unsaved changes
                         dialogUnsavedChanges(discardButtonClickListener);
                         return true;
                     }
@@ -357,29 +423,35 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public void onBackPressed() {
 
-        if (!changesMade()) {
-            navHomeOrBack(true);
-        } else {
-            DialogInterface.OnClickListener discardButtonClickListener =
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            resetTextFieldsAfterEditCancel();
-                            dialogClicked = true;
-                            navHomeOrBack(true);
-                        }
-                    };
-            dialogUnsavedChanges(discardButtonClickListener);
-        }
         if (currentState == MAIN_TO_ADD_VIEW) {
-            if (dialogClicked == false) {
-                return;
-            } else {
-                super.onBackPressed();
-                dialogClicked = false;
+//                    if changes weren't made on main->add
+            if (!changesMade()) {
+                navHomeOrBack(false);
+            } else { // if changes were made on main->add
+                DialogInterface.OnClickListener discardButtonClickListener =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                navHomeOrBack(false);
+                            }
+                        };
+                dialogUnsavedChanges(discardButtonClickListener);
             }
-        } else if (currentState == LIST_TO_PROD_VIEW) {
-            super.onBackPressed();
+        } else {  // if currentstate is other than main-add
+            if (!changesMade()) { // if no changes were made
+                navHomeOrBack(false);
+            } else { // if changes were made on another screen
+                DialogInterface.OnClickListener discardButtonClickListener =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                resetTextFieldsAfterEditCancel();
+                                dialogClicked = true;
+                                navHomeOrBack(false);
+                            }
+                        };
+                dialogUnsavedChanges(discardButtonClickListener);
+            }
         }
     }
 
@@ -420,41 +492,6 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
                         + "LIST_TO_PROD+VIEW: " + productState[LIST_TO_PROD_VIEW] + "\n"
                         + "PROD_VIEW_TO_PROD_EDIT: " + productState[PROD_VIEW_TO_PROD_EDIT] + "\n"
                         + "PROD_EDIT_TO_PROD_VIEW: " + productState[PROD_EDIT_TO_PROD_VIEW] + "\n", Toast.LENGTH_LONG).show();
-                break;
-        }
-    }
-
-    public static void setProductState(int fromTo) {
-
-        currentState = fromTo;
-
-        switch (fromTo) {
-            case MAIN_TO_ADD_VIEW:
-                productState[MAIN_TO_ADD_VIEW] = true;
-                productState[LIST_TO_PROD_VIEW] = false;
-                productState[PROD_VIEW_TO_PROD_EDIT] = false;
-                productState[PROD_EDIT_TO_PROD_VIEW] = false;
-                break;
-
-            case LIST_TO_PROD_VIEW:
-                productState[MAIN_TO_ADD_VIEW] = false;
-                productState[LIST_TO_PROD_VIEW] = true;
-                productState[PROD_VIEW_TO_PROD_EDIT] = false;
-                productState[PROD_EDIT_TO_PROD_VIEW] = false;
-                break;
-
-            case PROD_VIEW_TO_PROD_EDIT:
-                productState[MAIN_TO_ADD_VIEW] = false;
-                productState[LIST_TO_PROD_VIEW] = false;
-                productState[PROD_VIEW_TO_PROD_EDIT] = true;
-                productState[PROD_EDIT_TO_PROD_VIEW] = false;
-                break;
-
-            case PROD_EDIT_TO_PROD_VIEW:
-                productState[MAIN_TO_ADD_VIEW] = false;
-                productState[LIST_TO_PROD_VIEW] = false;
-                productState[PROD_VIEW_TO_PROD_EDIT] = false;
-                productState[PROD_EDIT_TO_PROD_VIEW] = true;
                 break;
         }
     }
@@ -505,7 +542,6 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
                 Toast.makeText(this, getString(R.string.product_item_deleted), Toast.LENGTH_SHORT).show();
             }
         }
-//        todo: keep this...? was used calling from dialog on previous app
         finish();
     }
 
@@ -556,16 +592,39 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
 
     }
 
+    private void dialogDeleteRow() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.dialog_delete_row_q);
+        builder.setPositiveButton(R.string.dialog_delete_del, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                deleteInventoryRow();
+                resetProductState();
+                lockEditables(true);
+                NavUtils.navigateUpFromSameTask(ProductActivity.this);
+            }
+        });
+        builder.setNegativeButton(R.string.dialog_delete_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     private void dialogUnsavedChanges(
             DialogInterface.OnClickListener discardButtonClickListener) {
-        // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the positive and negative buttons on the dialog.
+        // create an alertDialog.builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_unsaved_changes_q);
         builder.setPositiveButton(R.string.dialog_unsaved_discard, discardButtonClickListener);
         builder.setNegativeButton(R.string.dialog_unsaved_keep_editing, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "keep editing" button, so dismiss the dialog
+                // user clicked the "keep editing" button, so dismiss the dialog
                 // and continue editing the product
                 if (dialog != null) {
                     dialog.dismiss();
@@ -573,7 +632,6 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
-        // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
@@ -583,7 +641,9 @@ public class ProductActivity extends AppCompatActivity implements LoaderManager.
 //      error checking for all this:
 //      found that keyboard prevents putting in negatives (qty/price), as well as non-integer-text; so correct data isn't an issue.
 //      empty fields have already been taken care of. no real reason to validate strings for product name, supplier name
-//
+//      over-sized numbers have been limited by constants and checked before this method is called. the limit of the text boxes length
+//      prevents from overloading the integer.
+
         if (currentInventoryURI == null && currentState == MAIN_TO_ADD_VIEW) {
             saveInventoryRowValues = addNewRow(new ContentValues());
 //          add new item to db

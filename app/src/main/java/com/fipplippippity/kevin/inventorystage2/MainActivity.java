@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         inventoryCursorAdapter = new InventoryCursorAdapter(this, null); // null: handled by loader
         inventoryListView.setAdapter(inventoryCursorAdapter);
 
-//        focusable on each list item button in is set to false (in xml) to allow listview onitemclicklistener to work
+//        "focusable" on each list item button in is set to false (in xml) to allow listview onitemclicklistener to work
         inventoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

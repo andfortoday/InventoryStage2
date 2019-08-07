@@ -2,9 +2,11 @@
 
     <string name="app_name">"Inventory, Stage 2"</string>
 
-    <string name="empty_list_text">"this list is empty"</string>
-
+    <string name="empty_list_text">"<b>the inventory list is empty.</b>\n\n\nin order to add items to the database, click the plus button at the bottom right. then enter information using these examples as a guide:\n\nproduct\'s name:\n<i>super extra nice notebook</i>\n\nprice (no decimal points):\n<i>245</i>\n\nthe quantity:\n<i>278</i>\n\nsupplier name:\nfreddy\'s fabulous notebooks\n\nand their contact phone number:\n247.269.2154"</string>
     <string name="btn_list_sale">"sale"</string>
+    <string name="list_pre_dollar">"$"</string>
+    <string name="list_pre_qty">"qty: "</string>
+
 
     <string name="menu_delete_title">"delete"</string>
     <string name="menu_edit_title">"edit"</string>
@@ -39,6 +41,10 @@
     <string name="err_product_save_empty_fields">"you have to fill out each field on this screen"</string>
     <string name="err_product_save_error_saving">"there was an error saving this product"</string>
     <string name="err_product_save_updating">"there was an error updating this product"</string>
+    <string name="err_main_sale_btn_saving">"error with updating the product quantity/sale"</string>
+    <string name="err_max_qty_exceeded">"surely you don't have more than 300,000 of these?\nplease enter a value less than/equal to 300,000"</string>
+    <string name="err_max_price_exceeded">"sorry, you have exceeded the max price limit.\nplease enter a value less than/equal to $10,000,000"</string>
+    <string name="err_number_input_too_large">"the number you have input is too large. max for price is $10,000,000 and for quantity is 300,000"</string>
 
     <string name="dialog_unsaved_changes_q">"discard your changes and quit editing?"</string>
     <string name="dialog_unsaved_discard">"discard"</string>
@@ -46,5 +52,8 @@
     <string name="dialog_delete_row_q">"delete this product?"</string>
     <string name="dialog_delete_del">"delete"</string>
     <string name="dialog_delete_cancel">"cancel"</string>
+
+    <string name="info_no_changes_made">"no changes were made"</string>
+    <string name="info_sale_successful">"sale completed"</string>
 
 </resources>

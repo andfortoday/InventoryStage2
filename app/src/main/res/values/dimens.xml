@@ -17,5 +17,6 @@
     <dimen name="label_text">16sp</dimen>
     <dimen name="text_prod_input">14sp</dimen>
     <dimen name="edit_text_margin">16dp</dimen>
+    <dimen name="tv_empty_list_padding">64dp</dimen>
 
 </resources>

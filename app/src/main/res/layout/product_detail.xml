@@ -8,8 +8,6 @@
     android:padding="@dimen/prod_layout_border"
     tools:context=".ProductActivity">
 
-    <!--todo: fix tab/next positions to go in order. right now, qty is skipped and last in order -->
-
     <TextView
         android:id="@+id/tv_label_product_info"
         android:layout_width="wrap_content"
@@ -29,9 +27,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/edit_text_margin"
         android:layout_marginRight="@dimen/edit_text_margin"
+        android:focusedByDefault="true"
         android:gravity="center"
         android:hint="@string/edit_hint_product_name"
         android:inputType="textAutoComplete"
+        android:nextFocusRight="@id/et_product_price"
+        android:nextFocusDown="@id/et_product_price"
+        android:nextFocusForward="@id/et_product_price"
         android:textSize="@dimen/text_prod_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_label_product_info"
@@ -39,6 +41,7 @@
 
         tools:text="elephant-shaped coffee cup" />
 
+    <!--todo: hardcoding-->
     <EditText
         android:id="@+id/et_product_price"
         android:layout_width="@dimen/match_constraint"
@@ -48,10 +51,15 @@
         android:gravity="center"
         android:hint="@string/edit_hint_product_price"
         android:inputType="number"
+        android:maxLength="@integer/price_length"
+        android:nextFocusRight="@id/et_product_qty"
+        android:nextFocusDown="@id/et_product_qty"
+        android:nextFocusForward="@id/et_product_qty"
         android:textSize="@dimen/text_prod_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_label_product_info"
         app:layout_constraintTop_toBottomOf="@id/et_product_name"
+
 
         tools:text="$3200" />
 
@@ -70,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@id/et_product_price"
 
         />
-
+    <!--todo: hardcoding-->
     <EditText
         android:id="@+id/et_product_qty"
         android:layout_width="@dimen/match_constraint"
@@ -81,6 +89,10 @@
         android:gravity="center"
         android:hint="@string/edit_hint_quantity"
         android:inputType="number"
+        android:maxLength="@integer/qty_length"
+        android:nextFocusRight="@id/et_supplier_name"
+        android:nextFocusDown="@id/et_supplier_name"
+        android:nextFocusForward="@id/et_supplier_name"
         android:textSize="@dimen/text_prod_input"
         app:layout_constraintEnd_toStartOf="@id/fab_qty_plus"
         app:layout_constraintStart_toEndOf="@id/fab_qty_minus"
@@ -127,6 +139,9 @@
         android:gravity="center"
         android:hint="@string/edit_hint_supplier_name"
         android:inputType="textAutoComplete"
+        android:nextFocusRight="@id/et_supplier_phone"
+        android:nextFocusDown="@id/et_supplier_phone"
+        android:nextFocusForward="@id/et_supplier_phone"
         android:textSize="@dimen/text_prod_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_label_supplier_info"
@@ -143,6 +158,9 @@
         android:gravity="center"
         android:hint="@string/edit_hint_supplier_phone"
         android:inputType="phone"
+        android:nextFocusRight="@id/et_product_name"
+        android:nextFocusDown="@id/et_product_name"
+        android:nextFocusForward="@id/et_product_name"
         android:textSize="@dimen/text_prod_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_label_supplier_info"

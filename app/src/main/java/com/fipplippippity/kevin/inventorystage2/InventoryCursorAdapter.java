@@ -18,8 +18,6 @@ import com.fipplippippity.kevin.inventorystage2.sqlite.InventoryContract.Invento
 public class InventoryCursorAdapter extends CursorAdapter {
 
     final static int ZERO_FLAGS = 0;
-    private static int productQty, productIDIndex;
-    private static long productID;
 
     public InventoryCursorAdapter(Context context, Cursor c) {
         super(context, c, ZERO_FLAGS);
@@ -40,40 +38,40 @@ public class InventoryCursorAdapter extends CursorAdapter {
         int productNameIndex = cursor.getColumnIndex(InventoryEntry.COL_PRODUCT_NAME);
         int productPriceIndex = cursor.getColumnIndex(InventoryEntry.COL_PRICE);
         int productQtyIndex = cursor.getColumnIndex(InventoryEntry.COL_QTY);
-        productIDIndex = cursor.getColumnIndex(InventoryEntry._ID);
+        final int productIDIndex = cursor.getColumnIndex(InventoryEntry._ID);
         String productName = cursor.getString(productNameIndex);
         int productPrice = Integer.valueOf(cursor.getString(productPriceIndex));
-        productQty = Integer.valueOf(cursor.getString(productQtyIndex));
+        final int productQty = Integer.valueOf(cursor.getString(productQtyIndex));
+        final long productID = Long.valueOf(cursor.getString(productIDIndex));
 
         btnSaleItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                productID = Long.valueOf(cursor.getString(productIDIndex));
+
                 if (productQty >= 1) {
-                    productQty--;
-                    updateQTY(context);
+                    int newProductQty = productQty;
+                    newProductQty--;
+                    if (updateQTY(context, newProductQty, productID) == 0) {
+                        Toast.makeText(context, context.getString(R.string.err_main_sale_btn_saving), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, context.getString(R.string.info_sale_successful), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
 
         tvProductName.setText(productName);
-//        todo: hardcoding
-        tvProductPrice.setText("$" + String.valueOf(productPrice));
-        tvProductQty.setText("qty: " + String.valueOf(productQty));
+        tvProductPrice.setText(context.getString(R.string.list_pre_dollar) + String.valueOf(productPrice));
+        tvProductQty.setText(context.getString(R.string.list_pre_qty) + String.valueOf(productQty));
     }
 
-    private int updateQTY(Context qtyContext) {
+    private int updateQTY(Context passTheContext, int passTheQty, long passTheID) {
 
         ContentValues newQty = new ContentValues();
-        Uri qtyURI = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, productID);
-        newQty.put(InventoryEntry.COL_QTY, productQty);
-        int qtyRow = qtyContext.getContentResolver().update(qtyURI, newQty, null, null);
-        if (qtyRow != 0) {
-            qtyContext.getContentResolver().notifyChange(qtyURI, null);
-        } else {
-//            todo hardcoding
-            Toast.makeText(qtyContext, "error with updating the product quantity/sale", Toast.LENGTH_SHORT).show();
-        }
+        Uri qtyURI = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, passTheID);
+        newQty.put(InventoryEntry.COL_QTY, passTheQty);
+        int qtyRow = passTheContext.getContentResolver().update(qtyURI, newQty, null, null);
+
         return qtyRow;
     }
 }

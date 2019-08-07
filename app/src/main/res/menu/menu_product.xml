@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<!--todo: implement menu in new activity's java-->
-
-<!--todo: thinking ahead: have to change screen title;
-    todo: - also have to change edit menu item to "check" v/ or something like that when clicked.
-    todoD:  just checked: add here and set visibility.
-    -->
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.fipplippippity.kevin.inventorystage2.ProductActivity"
-    >
+    tools:context="com.fipplippippity.kevin.inventorystage2.ProductActivity">
 
     <!--https://material.io/tools/icons/?search=delete&icon=delete_outline&style=outline-->
     <item
